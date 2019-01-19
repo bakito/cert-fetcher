@@ -2,3 +2,4 @@
 *.pem
 .vscode
 cert-fetcher
+dist
