@@ -14,9 +14,8 @@ import (
 )
 
 var (
-	jksPassword    string
-	jksSource      string
-	jksCertIndexes []int
+	jksPassword string
+	jksSource   string
 )
 
 // jksCmd represents the jks command
@@ -83,7 +82,7 @@ var jksCmd = &cobra.Command{
 		k, _ := os.Create(fileName)
 		defer k.Close()
 		keystore.Encode(k, ks, []byte(jksPassword))
-		fmt.Printf("java keystore file %s with %d certificates created.\n", fileName, cnt)
+		fmt.Printf("java keystore file %s with %d certificate(s) created.\n", fileName, cnt)
 		return nil
 	},
 }
@@ -92,23 +91,11 @@ func init() {
 	rootCmd.AddCommand(jksCmd)
 	jksCmd.PersistentFlags().StringVarP(&jksPassword, "password", "p", "changeit", "the password to be used for the java keystore")
 	jksCmd.PersistentFlags().StringVarP(&jksSource, "source", "s", "", "the source keystore to add the certs to")
-	jksCmd.PersistentFlags().IntSliceVarP(&jksCertIndexes, "add", "a", make([]int, 0), "import the certificates at the given indexes")
+
 }
 
 func alias(cert *x509.Certificate) string {
 	return fmt.Sprintf("%s (%s)", strings.ToLower(cert.Subject.CommonName), strings.ToLower(cert.Issuer.CommonName))
-}
-
-func isToExport(i int) bool {
-	if len(jksCertIndexes) == 0 {
-		return true
-	}
-	for _, a := range jksCertIndexes {
-		if a == i {
-			return true
-		}
-	}
-	return false
 }
 
 func alreadyContained(ks keystore.KeyStore, cert *x509.Certificate, index int) bool {

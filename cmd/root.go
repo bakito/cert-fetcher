@@ -22,8 +22,9 @@ NotAfter: %s
 )
 
 var (
-	targetURL  string
-	outputFile string
+	targetURL   string
+	outputFile  string
+	certIndexes []int
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -59,6 +60,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&targetURL, "url", "u", "", "the URL to fetch the certificate from")
 	rootCmd.MarkPersistentFlagRequired("url")
 	rootCmd.PersistentFlags().StringVarP(&outputFile, "out-file", "o", "", "the output file")
+	rootCmd.PersistentFlags().IntSliceVarP(&certIndexes, "import-at", "i", make([]int, 0), "import the certificates at the given indexes")
 }
 
 func fetchCertificates() ([]*x509.Certificate, error) {
@@ -75,4 +77,16 @@ func fetchCertificates() ([]*x509.Certificate, error) {
 		return resp.TLS.PeerCertificates, err
 	}
 	return nil, fmt.Errorf("Could not find any certificates")
+}
+
+func isToExport(i int) bool {
+	if len(certIndexes) == 0 {
+		return true
+	}
+	for _, a := range certIndexes {
+		if a == i {
+			return true
+		}
+	}
+	return false
 }

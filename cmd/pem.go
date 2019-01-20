@@ -24,7 +24,7 @@ var pemCmd = &cobra.Command{
 			return err
 		}
 
-		pem, err := certChainToPEM(certs)
+		pem, cnt, err := certChainToPEM(certs)
 
 		if err != nil {
 			return err
@@ -45,7 +45,7 @@ var pemCmd = &cobra.Command{
 
 		defer f.Close()
 		f.Write(pem)
-		fmt.Printf("pem file %s with %d certificates created.\n", fileName, len(certs))
+		fmt.Printf("pem file %s with %d certificate(s) created.\n", fileName, cnt)
 		return nil
 	},
 }
@@ -55,13 +55,19 @@ func init() {
 }
 
 // CertChainToPEM is a utility function returns a PEM encoded chain of x509 Certificates, in the order they are passed
-func certChainToPEM(certChain []*x509.Certificate) ([]byte, error) {
+func certChainToPEM(certChain []*x509.Certificate) ([]byte, int, error) {
 	var pemBytes bytes.Buffer
+	cnt := 0
 	for i, cert := range certChain {
-		fmt.Printf("Adding certificate #%d: %s\n", i, cert.Subject.CommonName)
-		if err := pem.Encode(&pemBytes, &pem.Block{Type: "CERTIFICATE", Bytes: cert.Raw}); err != nil {
-			return nil, err
+		if isToExport(i) {
+			fmt.Printf(" + Adding certificate #%d: %s\n", i, cert.Subject.CommonName)
+			if err := pem.Encode(&pemBytes, &pem.Block{Type: "CERTIFICATE", Bytes: cert.Raw}); err != nil {
+				return nil, 0, err
+			}
+			cnt++
+		} else {
+			fmt.Printf(" - Skipping certificate #%d: %s\n", i, cert.Subject.CommonName)
 		}
 	}
-	return pemBytes.Bytes(), nil
+	return pemBytes.Bytes(), cnt, nil
 }
