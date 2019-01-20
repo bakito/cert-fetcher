@@ -10,7 +10,6 @@ builds:
 
   goos:
     - linux
-    - darwin
     - windows
   goarch:
     - 386
@@ -21,7 +20,6 @@ builds:
     post: ./goreleaser/upx.sh
 archive:
   replacements:
-    darwin: Darwin
     linux: Linux
     windows: Windows
     386: i386
