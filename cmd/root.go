@@ -4,7 +4,6 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"time"
@@ -13,7 +12,7 @@ import (
 )
 
 const (
-	certTemplate string = `Certificate %d:
+	certTemplate string = `Certificate #%d:
 Subject: %s 
 Issuer: %s
 NotBefore: %s
@@ -32,13 +31,18 @@ var rootCmd = &cobra.Command{
 	Use:   "cert-fetcher",
 	Short: "Fetch client certificates from https urls",
 	Long:  `A go application that fetches public certificates from https sites and stores them into different output formates.`,
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 
-		certs := fetchCertificates()
+		certs, err := fetchCertificates()
+		if err != nil {
+			return err
+		}
+
 		loc := time.Local
 		for i, cert := range certs {
 			fmt.Printf(certTemplate, i, cert.Subject.CommonName, cert.Issuer.CommonName, cert.NotBefore.In(loc).String(), cert.NotAfter.In(loc).String())
 		}
+		return nil
 	},
 }
 
@@ -57,21 +61,18 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&outputFile, "out-file", "o", "", "the output file")
 }
 
-func fetchCertificates() []*x509.Certificate {
+func fetchCertificates() ([]*x509.Certificate, error) {
 
 	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 
 	resp, err := http.Get(targetURL)
 
 	if err != nil {
-		log.Fatal(err)
-		os.Exit(1)
+		return nil, err
 	}
 
 	if resp.TLS != nil {
-		return resp.TLS.PeerCertificates
+		return resp.TLS.PeerCertificates, err
 	}
-	log.Fatal(fmt.Errorf("Could not find any certificates"))
-	os.Exit(1)
-	return nil
+	return nil, fmt.Errorf("Could not find any certificates")
 }
