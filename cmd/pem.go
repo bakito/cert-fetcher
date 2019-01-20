@@ -13,9 +13,10 @@ import (
 
 // pemCmd represents the pem command
 var pemCmd = &cobra.Command{
-	Use:   "pem",
-	Short: "store the certificates ad pem file",
-	Long:  "store the certificates ad pem file",
+	Version: version,
+	Use:     "pem",
+	Short:   "store the certificates ad pem file",
+	Long:    "store the certificates ad pem file",
 
 	RunE: func(cmd *cobra.Command, args []string) error {
 

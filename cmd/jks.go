@@ -20,9 +20,10 @@ var (
 
 // jksCmd represents the jks command
 var jksCmd = &cobra.Command{
-	Use:   "jks",
-	Short: "store the certificates into an java keystore",
-	Long:  "store the certificates into an java keystore",
+	Version: version,
+	Use:     "jks",
+	Short:   "store the certificates into an java keystore",
+	Long:    "store the certificates into an java keystore",
 	RunE: func(cmd *cobra.Command, args []string) error {
 
 		certs, err := fetchCertificates()

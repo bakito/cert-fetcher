@@ -25,13 +25,15 @@ var (
 	targetURL   string
 	outputFile  string
 	certIndexes []int
+	version     string
 )
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "cert-fetcher",
-	Short: "Fetch client certificates from https urls",
-	Long:  `A go application that fetches public certificates from https sites and stores them into different output formates.`,
+	Version: version,
+	Use:     "cert-fetcher",
+	Short:   "Fetch client certificates from https urls",
+	Long:    "A go application that fetches public certificates from https sites and stores them into different output formates.",
 	RunE: func(cmd *cobra.Command, args []string) error {
 
 		certs, err := fetchCertificates()
