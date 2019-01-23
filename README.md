@@ -1,4 +1,6 @@
-[![Build Status](https://travis-ci.com/bakito/cert-fetcher.svg?branch=master)](https://travis-ci.com/bakito/cert-fetcher) [![Go Report Card](https://goreportcard.com/badge/github.com/bakito/cert-fetcher)](https://goreportcard.com/report/github.com/bakito/cert-fetcher)
+[![GoDoc](https://godoc.org/github.com/bakito/cert-fetcher?status.svg)](http://godoc.org/github.com/bakito/cert-fetcher)
+[![Build Status](https://travis-ci.com/bakito/cert-fetcher.svg?branch=master)](https://travis-ci.com/bakito/cert-fetcher)
+[![Go Report Card](https://goreportcard.com/badge/github.com/bakito/cert-fetcher)](https://goreportcard.com/report/github.com/bakito/cert-fetcher)
 
 # cert-fetcher
 
@@ -40,4 +42,12 @@ cert-fetcher jks --url https://www.foo.bar
 
 # All options
 cert-fetcher jks --help
+```
+
+### Run behind proxy
+
+To run cert-fetcher behind a proxy, just provide the proxy as env variable.
+
+```bash
+env https_proxy=http://proxy.net:8080 cert-fetcher jks --url https://www.foo.bar
 ```
