@@ -4,7 +4,9 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
+	"io"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -19,7 +21,8 @@ NotAfter: %s
 )
 
 var (
-	loc = time.Local
+	loc           = time.Local
+	out io.Writer = os.Stdout // modified during testing
 )
 
 // Print Print all certificates fir the given target URL
@@ -29,7 +32,7 @@ func Print(targetURL string) error {
 		return err
 	}
 	for i, cert := range certs {
-		fmt.Printf(certTemplate, i, cert.Subject.CommonName, cert.Issuer.CommonName, cert.NotBefore.In(loc).String(), cert.NotAfter.In(loc).String())
+		fmt.Fprintf(out, certTemplate, i, cert.Subject.CommonName, cert.Issuer.CommonName, cert.NotBefore.In(loc).String(), cert.NotAfter.In(loc).String())
 	}
 	return nil
 }
@@ -66,7 +69,7 @@ func IsToExport(certIndexes []int, i int) bool {
 
 // PrintAdd print an add statement
 func PrintAdd(i int, cert *x509.Certificate) {
-	fmt.Printf(" + Adding   certificate #%d: %s\n", i, cert.Subject.CommonName)
+	fmt.Fprintf(out, " + Adding   certificate #%d: %s\n", i, cert.Subject.CommonName)
 }
 
 // PrintSkip print an skip statement
@@ -76,5 +79,5 @@ func PrintSkip(i int, cert *x509.Certificate) {
 
 // PrintSkipDetailed print an skip statement
 func PrintSkipDetailed(i int, cert *x509.Certificate, detail string) {
-	fmt.Printf(" - Skipping certificate #%d: %s %s\n", i, cert.Subject.CommonName, detail)
+	fmt.Fprintf(out, " - Skipping certificate #%d: %s %s\n", i, cert.Subject.CommonName, detail)
 }

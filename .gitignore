@@ -3,3 +3,4 @@
 .vscode
 cert-fetcher
 dist
+coverage.out
