@@ -13,18 +13,6 @@ builds:
   goos:
     - linux
     - windows
-  goarch:
-    - 386
-    - amd64
-    - arm
-    - arm64
-  hooks:
-    post: ./.goreleaser/upx.sh
-- env:
-  - CGO_ENABLED=0
-  ldflags:
-    - -X github.com/bakito/cert-fetcher/cmd.version={{.Version}}
-  goos:
     - darwin
   goarch:
     - 386
@@ -32,12 +20,10 @@ builds:
     - arm
     - arm64
   hooks:
-    post: "./.goreleaser/upx.sh darwin"
+    post: ./.goreleaser/upx.sh
 
 archive:
   replacements:
-    linux: Linux
-    windows: Windows
     386: i386
     amd64: x86_64
 checksum:
