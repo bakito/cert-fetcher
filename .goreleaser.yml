@@ -4,6 +4,7 @@ before:
   hooks:
     # you may remove this if you don't use vgo
     - go mod download
+
 builds:
 - env:
   - CGO_ENABLED=0
@@ -19,6 +20,20 @@ builds:
     - arm64
   hooks:
     post: ./.goreleaser/upx.sh
+- env:
+  - CGO_ENABLED=0
+  ldflags:
+    - -X github.com/bakito/cert-fetcher/cmd.version={{.Version}}
+  goos:
+    - darwin
+  goarch:
+    - 386
+    - amd64
+    - arm
+    - arm64
+  hooks:
+    post: "./.goreleaser/upx.sh darwin"
+
 archive:
   replacements:
     linux: Linux

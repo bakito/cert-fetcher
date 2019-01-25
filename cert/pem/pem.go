@@ -5,10 +5,15 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"fmt"
+	"io"
 	"net/url"
 	"os"
 
 	c "github.com/bakito/cert-fetcher/cert"
+)
+
+var (
+	out io.Writer = os.Stdout // modified during testing
 )
 
 // Export Export the certificates from the target URL into a pem file
@@ -17,6 +22,10 @@ func Export(targetURL string, certIndexes []int, outputFile string) error {
 	if err != nil {
 		return err
 	}
+	return exportCerts(certs, targetURL, certIndexes, outputFile)
+}
+
+func exportCerts(certs []*x509.Certificate, targetURL string, certIndexes []int, outputFile string) error {
 
 	var pemBytes bytes.Buffer
 	cnt := 0
@@ -48,7 +57,7 @@ func Export(targetURL string, certIndexes []int, outputFile string) error {
 
 	defer f.Close()
 	f.Write(pemBytes.Bytes())
-	fmt.Printf("pem file %s with %d certificate(s) created.\n", fileName, cnt)
+	fmt.Fprintf(out, "pem file %s with %d certificate(s) created.\n", fileName, cnt)
 	return nil
 }
 

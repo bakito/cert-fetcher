@@ -3,6 +3,7 @@ package jks
 import (
 	"crypto/x509"
 	"fmt"
+	"io"
 	"net/url"
 	"os"
 	"reflect"
@@ -13,13 +14,20 @@ import (
 	keystore "github.com/pavel-v-chernykh/keystore-go"
 )
 
+var (
+	out io.Writer = os.Stdout // modified during testing
+)
+
 // Export Export the certificates from the target URL into java keystore file
 func Export(targetURL string, certIndexes []int, jksSource string, jksPassword string, outputFile string) error {
 	certs, err := c.FetchCertificates(targetURL)
 	if err != nil {
 		return err
 	}
+	return exportCerts(certs, targetURL, certIndexes, jksSource, jksPassword, outputFile)
+}
 
+func exportCerts(certs []*x509.Certificate, targetURL string, certIndexes []int, jksSource string, jksPassword string, outputFile string) error {
 	var ks keystore.KeyStore
 	if jksSource != "" {
 
@@ -32,7 +40,7 @@ func Export(targetURL string, certIndexes []int, jksSource string, jksPassword s
 		if err != nil {
 			return err
 		}
-		fmt.Printf("Using existing java keystore %s to add the new certificates\n", jksSource)
+		fmt.Fprintf(out, "Using existing java keystore %s to add the new certificates\n", jksSource)
 	} else {
 		ks = keystore.KeyStore{}
 	}
@@ -71,7 +79,7 @@ func Export(targetURL string, certIndexes []int, jksSource string, jksPassword s
 	k, _ := os.Create(fileName)
 	defer k.Close()
 	keystore.Encode(k, ks, []byte(jksPassword))
-	fmt.Printf("java keystore file %s with %d certificate(s) created.\n", fileName, cnt)
+	fmt.Fprintf(out, "java keystore file %s with %d certificate(s) created.\n", fileName, cnt)
 	return nil
 }
 

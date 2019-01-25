@@ -1,3 +1,3 @@
 #!/bin/bash
 
-upx -q dist/*/*
+upx -q dist/${1}*/*

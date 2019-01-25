@@ -9,12 +9,12 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_Export(t *testing.T) {
+func Test_FetchCertificates_Chain(t *testing.T) {
 	ts := httptest.NewTLSServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 	}))
 	defer ts.Close()
 
-	outFile := "test-cert.jks"
+	outFile := "test-cert"
 	err := jks.Export(ts.URL, []int{0}, "", "changeit", outFile)
 	assert.NoError(t, err)
 }
