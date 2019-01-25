@@ -28,6 +28,7 @@ func Export(targetURL string, certIndexes []int, jksSource string, jksPassword s
 }
 
 func exportCerts(certs []*x509.Certificate, targetURL string, certIndexes []int, jksSource string, jksPassword string, outputFile string) error {
+	additional := ""
 	var ks keystore.KeyStore
 	if jksSource != "" {
 
@@ -40,6 +41,7 @@ func exportCerts(certs []*x509.Certificate, targetURL string, certIndexes []int,
 		if err != nil {
 			return err
 		}
+		additional = " additional"
 		fmt.Fprintf(out, "Using existing java keystore %s to add the new certificates\n", jksSource)
 	} else {
 		ks = keystore.KeyStore{}
@@ -79,7 +81,7 @@ func exportCerts(certs []*x509.Certificate, targetURL string, certIndexes []int,
 	k, _ := os.Create(fileName)
 	defer k.Close()
 	keystore.Encode(k, ks, []byte(jksPassword))
-	fmt.Fprintf(out, "java keystore file %s with %d certificate(s) created.\n", fileName, cnt)
+	fmt.Fprintf(out, "java keystore file %s with %d%s certificate(s) created.\n", fileName, cnt, additional)
 	return nil
 }
 

@@ -3,6 +3,7 @@ package pem_test
 import (
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 
 	"github.com/bakito/cert-fetcher/cert/pem"
@@ -17,4 +18,5 @@ func Test_Export(t *testing.T) {
 	outFile := "test-cert.pem"
 	err := pem.Export(ts.URL, []int{0}, outFile)
 	assert.NoError(t, err)
+	os.Remove("test-cert.pem")
 }
