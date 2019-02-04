@@ -3,18 +3,13 @@ package test
 import (
 	"crypto/x509"
 	"encoding/pem"
-	"testing"
-
-	"github.com/stretchr/testify/assert"
 )
 
 // NewCert NewCert
-func NewCert(t *testing.T) *x509.Certificate {
+func NewCert() *x509.Certificate {
 
 	block, _ := pem.Decode([]byte(GeoTrustRoot))
-	assert.NotNil(t, block)
-	cert, err := x509.ParseCertificate(block.Bytes)
-	assert.NoError(t, err)
+	cert, _ := x509.ParseCertificate(block.Bytes)
 	return cert
 }
 
