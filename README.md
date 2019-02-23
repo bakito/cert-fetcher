@@ -1,7 +1,7 @@
 [![GoDoc](https://godoc.org/github.com/bakito/cert-fetcher?status.svg)](http://godoc.org/github.com/bakito/cert-fetcher)
 [![Build Status](https://travis-ci.com/bakito/cert-fetcher.svg?branch=master)](https://travis-ci.com/bakito/cert-fetcher)
 [![Go Report Card](https://goreportcard.com/badge/github.com/bakito/cert-fetcher)](https://goreportcard.com/report/github.com/bakito/cert-fetcher)
-[![GitHub Release](https://img.shields.io/github/release/bakito/cert-fercher.svg?style=flat)](https://github.com/bakito/cert-fetcher/releases)
+[![GitHub Release](https://img.shields.io/github/release/bakito/cert-fetcher.svg?style=flat)](https://github.com/bakito/cert-fetcher/releases)
 
 # cert-fetcher
 
