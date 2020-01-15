@@ -2,6 +2,7 @@
 [![Build Status](https://travis-ci.com/bakito/cert-fetcher.svg?branch=master)](https://travis-ci.com/bakito/cert-fetcher)
 [![Go Report Card](https://goreportcard.com/badge/github.com/bakito/cert-fetcher)](https://goreportcard.com/report/github.com/bakito/cert-fetcher)
 [![GitHub Release](https://img.shields.io/github/release/bakito/cert-fetcher.svg?style=flat)](https://github.com/bakito/cert-fetcher/releases)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fbakito%2Fcert-fetcher.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fbakito%2Fcert-fetcher?ref=badge_shield)
 
 # cert-fetcher
 
@@ -52,3 +53,7 @@ To run cert-fetcher behind a proxy, just provide the proxy as env variable.
 ```bash
 env https_proxy=http://proxy.net:8080 cert-fetcher jks --url https://www.foo.bar
 ```
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fbakito%2Fcert-fetcher.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fbakito%2Fcert-fetcher?ref=badge_large)
