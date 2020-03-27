@@ -9,8 +9,8 @@ import (
 var pemCmd = &cobra.Command{
 	Version: version,
 	Use:     "pem",
-	Short:   "store the certificates ad pem file",
-	Long:    "store the certificates ad pem file",
+	Short:   "store the certificates as pem file",
+	Long:    "store the certificates as pem file",
 
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return pem.Export(targetURL, certIndexes, outputFile)
