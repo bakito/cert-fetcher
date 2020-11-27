@@ -36,13 +36,13 @@ func exportCerts(certs []*x509.Certificate, targetURL string, certIndexes []int,
 		if err != nil {
 			return err
 		}
-		defer s.Close()
+		defer closeIt(s)
 		ks, err = keystore.Decode(s, []byte(jksPassword))
 		if err != nil {
 			return err
 		}
 		additional = " additional"
-		fmt.Fprintf(out, "Using existing java keystore %s to add the new certificates\n", jksSource)
+		_, _ = fmt.Fprintf(out, "Using existing java keystore %s to add the new certificates\n", jksSource)
 	} else {
 		ks = keystore.KeyStore{}
 	}
@@ -79,10 +79,12 @@ func exportCerts(certs []*x509.Certificate, targetURL string, certIndexes []int,
 	}
 
 	k, _ := os.Create(fileName)
-	defer k.Close()
-	keystore.Encode(k, ks, []byte(jksPassword))
-	fmt.Fprintf(out, "java keystore file %s with %d%s certificate(s) created.\n", fileName, cnt, additional)
-	return nil
+	defer closeIt(k)
+	if err := keystore.Encode(k, ks, []byte(jksPassword)); err != nil {
+		return err
+	}
+	_, err := fmt.Fprintf(out, "java keystore file %s with %d%s certificate(s) created.\n", fileName, cnt, additional)
+	return err
 }
 
 func alias(cert *x509.Certificate) string {
@@ -100,4 +102,8 @@ func alreadyContained(ks keystore.KeyStore, cert *x509.Certificate, index int) b
 		}
 	}
 	return false
+}
+
+func closeIt(s *os.File) {
+	_ = s.Close()
 }

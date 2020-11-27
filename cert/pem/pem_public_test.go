@@ -16,7 +16,7 @@ func Test_Export(t *testing.T) {
 	defer ts.Close()
 
 	outFile := "test-cert.pem"
-	err := pem.Export(ts.URL, []int{0}, outFile)
+	err := pem.ExportTo(ts.URL, []int{0}, outFile)
 	assert.NoError(t, err)
-	os.Remove("test-cert.pem")
+	_ = os.Remove("test-cert.pem")
 }

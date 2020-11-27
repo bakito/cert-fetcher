@@ -22,7 +22,6 @@ var rootCmd = &cobra.Command{
 	Short:   "Fetch client certificates from https urls",
 	Long:    "A go application that fetches public certificates from https sites and stores them into different output formates.",
 	RunE: func(cmd *cobra.Command, args []string) error {
-
 		return cert.Print(targetURL)
 	},
 }
@@ -38,7 +37,7 @@ func Execute() {
 
 func init() {
 	rootCmd.PersistentFlags().StringVarP(&targetURL, "url", "u", "", "the URL to fetch the certificate from")
-	rootCmd.MarkPersistentFlagRequired("url")
+	_ = rootCmd.MarkPersistentFlagRequired("url")
 	rootCmd.PersistentFlags().StringVarP(&outputFile, "out-file", "o", "", "the output file")
 	rootCmd.PersistentFlags().IntSliceVarP(&certIndexes, "import-at", "i", make([]int, 0), "import the certificates at the given indexes")
 }

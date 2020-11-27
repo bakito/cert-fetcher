@@ -16,32 +16,13 @@ var (
 	out io.Writer = os.Stdout // modified during testing
 )
 
-// Export Export the certificates from the target URL into a pem file
-func Export(targetURL string, certIndexes []int, outputFile string) error {
-	certs, err := c.FetchCertificates(targetURL)
+// ExportTo ExportTo the certificates from the target URL into a pem file
+func ExportTo(targetURL string, certIndexes []int, outputFile string) error {
+	data, cnt, err := Export(targetURL, certIndexes)
+
 	if err != nil {
 		return err
 	}
-	return exportCerts(certs, targetURL, certIndexes, outputFile)
-}
-
-func exportCerts(certs []*x509.Certificate, targetURL string, certIndexes []int, outputFile string) error {
-
-	var pemBytes bytes.Buffer
-	cnt := 0
-	for i, cert := range certs {
-		if c.IsToExport(certIndexes, i) {
-			c.PrintAdd(i, cert)
-			err := toPEM(&pemBytes, cert)
-			if err != nil {
-				return err
-			}
-			cnt++
-		} else {
-			c.PrintSkip(i, cert)
-		}
-	}
-
 	var fileName string
 	if outputFile != "" {
 		fileName = outputFile
@@ -55,10 +36,39 @@ func exportCerts(certs []*x509.Certificate, targetURL string, certIndexes []int,
 		return err
 	}
 
-	defer f.Close()
-	f.Write(pemBytes.Bytes())
-	fmt.Fprintf(out, "pem file %s with %d certificate(s) created.\n", fileName, cnt)
+	defer func() { _ = f.Close() }()
+	_, _ = f.Write(data)
+	_, _ = fmt.Fprintf(out, "pem file %s with %d certificate(s) created.\n", fileName, cnt)
 	return nil
+}
+
+// Export Export the certificates from the target URL
+func Export(targetURL string, certIndexes []int) ([]byte, int, error) {
+	certs, err := c.FetchCertificates(targetURL)
+	if err != nil {
+		return nil, 0, err
+	}
+	return exportCerts(certs, certIndexes)
+}
+
+func exportCerts(certs []*x509.Certificate, certIndexes []int) ([]byte, int, error) {
+
+	var pemBytes bytes.Buffer
+	cnt := 0
+	for i, cert := range certs {
+		if c.IsToExport(certIndexes, i) {
+			c.PrintAdd(i, cert)
+			err := toPEM(&pemBytes, cert)
+			if err != nil {
+				return nil, 0, err
+			}
+			cnt++
+		} else {
+			c.PrintSkip(i, cert)
+		}
+	}
+
+	return pemBytes.Bytes(), cnt, nil
 }
 
 func toPEM(pemBytes *bytes.Buffer, cert *x509.Certificate) error {
