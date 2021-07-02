@@ -14,7 +14,7 @@ tidy:
 # Run tests
 test: tidy fmt vet
 	gosec ./...
-	go test ./...  -coverprofile=coverage.out
+	go test ./... -coverprofile=coverage.out
 	go tool cover -func=coverage.out
 
 # Run ci tests
