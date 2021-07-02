@@ -13,6 +13,7 @@ tidy:
 
 # Run tests
 test: tidy fmt vet
+	gosec ./...
 	go test ./...  -coverprofile=coverage.out
 	go tool cover -func=coverage.out
 
@@ -29,4 +30,7 @@ test-release: tools
 tools:
 ifeq (, $(shell which goreleaser))
  $(shell go get github.com/goreleaser/goreleaser)
+endif
+ifeq (, $(shell which gosec))
+ $(shell go get -u github.com/securego/gosec/v2/cmd/gosec)
 endif

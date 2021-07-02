@@ -32,6 +32,7 @@ func exportCerts(certs []*x509.Certificate, targetURL string, certIndexes []int,
 	var ks keystore.KeyStore
 	if jksSource != "" {
 
+		// #nosec G304
 		s, err := os.Open(jksSource)
 		if err != nil {
 			return err
