@@ -89,7 +89,10 @@ func exportCerts(certs []*x509.Certificate, targetURL string, certIndexes []int,
 }
 
 func alias(cert *x509.Certificate) string {
-	return fmt.Sprintf("%s (%s)", strings.ToLower(cert.Subject.CommonName), strings.ToLower(cert.Issuer.CommonName))
+	if cert.Issuer.CommonName == "" || cert.Subject.CommonName == cert.Issuer.CommonName {
+		return strings.ToLower(cert.Subject.CommonName)
+	}
+	return strings.ToLower(fmt.Sprintf("%s (%s)", cert.Subject.CommonName, cert.Issuer.CommonName))
 }
 
 func alreadyContained(ks keystore.KeyStore, cert *x509.Certificate, index int) bool {

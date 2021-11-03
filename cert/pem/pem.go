@@ -36,7 +36,7 @@ func ExportTo(targetURL string, certIndexes []int, outputFile string) error {
 		return err
 	}
 
-	defer func() { _ = f.Close() }()
+	defer func() { _ = f.Close() }() // #nosec G307
 	_, _ = f.Write(data)
 	_, _ = fmt.Fprintf(out, "pem file %s with %d certificate(s) created.\n", fileName, cnt)
 	return nil
