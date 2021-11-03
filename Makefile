@@ -22,6 +22,8 @@ test-ci: test
 	goveralls -service=travis-ci -v -coverprofile=coverage.out
 
 release: tools
+	@version=$$(semver); \
+	git tag -s $$version -m"Release $$version"
 	goreleaser --rm-dist
 
 test-release: tools
