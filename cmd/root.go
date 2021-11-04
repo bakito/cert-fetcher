@@ -9,7 +9,6 @@ import (
 )
 
 var (
-	targetURL   string
 	outputFile  string
 	certIndexes []int
 	version     string
@@ -17,12 +16,14 @@ var (
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Version: version,
-	Use:     "cert-fetcher",
-	Short:   "Fetch client certificates from https urls",
-	Long:    "A go application that fetches public certificates from https sites and stores them into different output formates.",
+	Version:   version,
+	Use:       "cert-fetcher [url]",
+	Short:     "Fetch client certificates from https urls",
+	Long:      "A go application that fetches public certificates from https sites and stores them into different output formats.",
+	ValidArgs: []string{"url"},
+	Args:      cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return cert.Print(targetURL)
+		return cert.Print(args[0])
 	},
 }
 
@@ -36,8 +37,6 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringVarP(&targetURL, "url", "u", "", "the URL to fetch the certificate from")
-	_ = rootCmd.MarkPersistentFlagRequired("url")
 	rootCmd.PersistentFlags().StringVarP(&outputFile, "out-file", "o", "", "the output file")
 	rootCmd.PersistentFlags().IntSliceVarP(&certIndexes, "import-at", "i", make([]int, 0), "import the certificates at the given indexes")
 }

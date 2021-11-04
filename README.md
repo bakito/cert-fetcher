@@ -17,7 +17,7 @@ Fetch ssl certificates from https urls and store them in different formats.
 Prints the certificates of a given URL.
 
 ```bash
-cert-fetcher --url https://www.foo.bar
+cert-fetcher https://www.foo.bar
 
 # All options
 cert-fetcher --help
@@ -28,7 +28,7 @@ cert-fetcher --help
 Stores the certificates from the given URL into a pem file.
 
 ```bash
-cert-fetcher pem --url https://www.foo.bar
+cert-fetcher pem https://www.foo.bar
 
 # All options
 cert-fetcher pem --help
@@ -39,7 +39,7 @@ cert-fetcher pem --help
 Stores the certificates from the given URL into a java keystore file.
 
 ```bash
-cert-fetcher jks --url https://www.foo.bar
+cert-fetcher jks https://www.foo.bar
 
 # All options
 cert-fetcher jks --help
