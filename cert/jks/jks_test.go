@@ -11,7 +11,6 @@ import (
 )
 
 func Test_exportCerts_min(t *testing.T) {
-
 	out, revert := mockPrintTarget()
 	defer revert()
 
@@ -22,7 +21,6 @@ func Test_exportCerts_min(t *testing.T) {
 }
 
 func Test_exportCerts_cert_0_with_name(t *testing.T) {
-
 	out, revert := mockPrintTarget()
 	defer revert()
 
@@ -33,7 +31,6 @@ func Test_exportCerts_cert_0_with_name(t *testing.T) {
 }
 
 func Test_exportCerts_cert_1(t *testing.T) {
-
 	out, revert := mockPrintTarget()
 	defer revert()
 
@@ -44,7 +41,6 @@ func Test_exportCerts_cert_1(t *testing.T) {
 }
 
 func Test_exportCerts_to_existing_empty_jks(t *testing.T) {
-
 	out, revert := mockPrintTarget()
 	defer revert()
 
@@ -57,7 +53,6 @@ java keystore file foo.bar.jks with 1 additional certificate(s) created.
 }
 
 func Test_exportCerts_to_existing_jks_duplicate(t *testing.T) {
-
 	out, revert := mockPrintTarget()
 	defer revert()
 
@@ -70,7 +65,6 @@ java keystore file foo.bar.jks with 0 additional certificate(s) created.
 }
 
 func Test_exportCerts_to_existing_jks_additional(t *testing.T) {
-
 	out, revert := mockPrintTarget()
 	defer revert()
 

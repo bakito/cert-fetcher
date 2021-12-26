@@ -10,7 +10,6 @@ import (
 
 // NewCert NewCert
 func NewCert(t *testing.T) *x509.Certificate {
-
 	block, _ := pem.Decode([]byte(GeoTrustRoot))
 	assert.NotNil(t, block)
 	cert, err := x509.ParseCertificate(block.Bytes)

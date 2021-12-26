@@ -27,5 +27,4 @@ func init() {
 	rootCmd.AddCommand(jksCmd)
 	jksCmd.PersistentFlags().StringVarP(&jksPassword, "password", "p", "changeit", "the password to be used for the java keystore")
 	jksCmd.PersistentFlags().StringVarP(&jksSource, "source", "s", "", "the source keystore to add the certs to")
-
 }

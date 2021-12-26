@@ -25,7 +25,7 @@ var (
 	out io.Writer = os.Stdout // modified during testing
 )
 
-// Print Print all certificates fir the given target URL
+// Print all certificates for the given target URL
 func Print(targetURL string) error {
 	certs, err := FetchCertificates(targetURL)
 	if err != nil {
@@ -48,10 +48,10 @@ func FetchCertificates(targetURL string) ([]*x509.Certificate, error) {
 
 	// #nosec G107
 	resp, err := http.Get(targetURL)
-
 	if err != nil {
 		return nil, err
 	}
+	defer resp.Body.Close()
 
 	if resp.TLS != nil {
 		return resp.TLS.PeerCertificates, err

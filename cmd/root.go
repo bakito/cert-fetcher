@@ -42,13 +42,14 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&outputFile, "out-file", "o", "", "the output file")
 	rootCmd.PersistentFlags().IntSliceVarP(&certIndexes, "import-at", "i", make([]int, 0), "import the certificates at the given indexes")
 }
+
 func urlArg(_ *cobra.Command, args []string) error {
 	if len(args) != 1 {
 		return errors.New("url argument must be provided")
 	}
 	u, err := url.Parse(args[0])
 	if err != nil {
-		return fmt.Errorf("url is invalid: %v", err)
+		return fmt.Errorf("url is invalid: %w", err)
 	}
 	if u.Scheme != "https" {
 		return errors.New("url schema must be https")

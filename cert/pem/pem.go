@@ -12,14 +12,11 @@ import (
 	c "github.com/bakito/cert-fetcher/cert"
 )
 
-var (
-	out io.Writer = os.Stdout // modified during testing
-)
+var out io.Writer = os.Stdout // modified during testing
 
 // ExportTo ExportTo the certificates from the target URL into a pem file
 func ExportTo(targetURL string, certIndexes []int, outputFile string) error {
 	data, cnt, err := Export(targetURL, certIndexes)
-
 	if err != nil {
 		return err
 	}
@@ -31,7 +28,6 @@ func ExportTo(targetURL string, certIndexes []int, outputFile string) error {
 		fileName = u.Host + ".pem"
 	}
 	f, err := os.Create(fileName)
-
 	if err != nil {
 		return err
 	}
@@ -52,7 +48,6 @@ func Export(targetURL string, certIndexes []int) ([]byte, int, error) {
 }
 
 func exportCerts(certs []*x509.Certificate, certIndexes []int) ([]byte, int, error) {
-
 	var pemBytes bytes.Buffer
 	cnt := 0
 	for i, cert := range certs {

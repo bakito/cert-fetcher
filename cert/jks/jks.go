@@ -14,9 +14,7 @@ import (
 	keystore "github.com/pavel-v-chernykh/keystore-go"
 )
 
-var (
-	out io.Writer = os.Stdout // modified during testing
-)
+var out io.Writer = os.Stdout // modified during testing
 
 // Export Export the certificates from the target URL into java keystore file
 func Export(targetURL string, certIndexes []int, jksSource string, jksPassword string, outputFile string) error {
