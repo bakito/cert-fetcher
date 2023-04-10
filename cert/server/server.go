@@ -51,9 +51,10 @@ func handleClient(conn net.Conn) {
 		err := tlscon.Handshake()
 		if err != nil {
 			log.Fatalf("server: handshake failed: %v", err)
-		} else {
-			log.Print("server: conn: Handshake completed")
 		}
+
+		log.Print("server: conn: Handshake completed")
+
 		state := tlscon.ConnectionState()
 		log.Println("Server: client public key is:")
 		for _, v := range state.PeerCertificates {
