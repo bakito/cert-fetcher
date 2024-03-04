@@ -24,7 +24,7 @@ var rootCmd = &cobra.Command{
 	Long:      "A go application that fetches public certificates from https sites and stores them into different output formats.",
 	ValidArgs: []string{"url"},
 	Args:      urlArg,
-	RunE: func(cmd *cobra.Command, args []string) error {
+	RunE: func(_ *cobra.Command, args []string) error {
 		return cert.Print(args[0])
 	},
 }

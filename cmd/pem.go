@@ -13,7 +13,7 @@ var pemCmd = &cobra.Command{
 	Long:      "store the certificates as pem file",
 	ValidArgs: []string{"url"},
 	Args:      urlArg,
-	RunE: func(cmd *cobra.Command, args []string) error {
+	RunE: func(_ *cobra.Command, args []string) error {
 		return pem.ExportTo(args[0], certIndexes, outputFile)
 	},
 }

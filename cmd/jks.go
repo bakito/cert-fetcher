@@ -18,7 +18,7 @@ var jksCmd = &cobra.Command{
 	Long:      "store the certificates into an java keystore",
 	Args:      urlArg,
 	ValidArgs: []string{"url"},
-	RunE: func(cmd *cobra.Command, args []string) error {
+	RunE: func(_ *cobra.Command, args []string) error {
 		return jks.Export(args[0], certIndexes, jksSource, jksPassword, outputFile)
 	},
 }

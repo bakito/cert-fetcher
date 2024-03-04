@@ -10,7 +10,7 @@ import (
 )
 
 func Test_Export(t *testing.T) {
-	ts := httptest.NewTLSServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	ts := httptest.NewTLSServer(http.HandlerFunc(func(http.ResponseWriter, *http.Request) {
 	}))
 	defer ts.Close()
 
