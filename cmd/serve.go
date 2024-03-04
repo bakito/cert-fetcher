@@ -27,7 +27,7 @@ var serveCmd = &cobra.Command{
 		return err
 	},
 	ValidArgs: []string{"port"},
-	RunE: func(cmd *cobra.Command, args []string) error {
+	RunE: func(_ *cobra.Command, args []string) error {
 		port, _ := strconv.Atoi(args[0])
 		return server.Serve(port)
 	},

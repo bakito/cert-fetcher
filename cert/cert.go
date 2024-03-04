@@ -41,8 +41,8 @@ func Print(targetURL string) error {
 
 // FetchCertificates fetch the certificate chain from te target URL
 func FetchCertificates(targetURL string) ([]*x509.Certificate, error) {
-	// #nosec G402 we are checking the cert, hence we allow insecure ones
 	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{
+		// #nosec G402 we are checking the cert, hence we allow insecure ones
 		InsecureSkipVerify: true,
 	}
 

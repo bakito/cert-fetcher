@@ -11,7 +11,7 @@ import (
 )
 
 func Test_FetchCertificates_No_TLS(t *testing.T) {
-	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	ts := httptest.NewServer(http.HandlerFunc(func(http.ResponseWriter, *http.Request) {
 	}))
 	defer ts.Close()
 
@@ -20,7 +20,7 @@ func Test_FetchCertificates_No_TLS(t *testing.T) {
 }
 
 func Test_FetchCertificates_Chain(t *testing.T) {
-	ts := httptest.NewTLSServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	ts := httptest.NewTLSServer(http.HandlerFunc(func(http.ResponseWriter, *http.Request) {
 	}))
 	defer ts.Close()
 	certs, err := cert.FetchCertificates(ts.URL)
@@ -29,7 +29,7 @@ func Test_FetchCertificates_Chain(t *testing.T) {
 }
 
 func Test_Print(t *testing.T) {
-	ts := httptest.NewTLSServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	ts := httptest.NewTLSServer(http.HandlerFunc(func(http.ResponseWriter, *http.Request) {
 	}))
 	defer ts.Close()
 
