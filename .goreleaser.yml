@@ -8,25 +8,14 @@ builds:
     goos:
       - linux
       - windows
-      - darwin
+    #- darwin
     goarch:
-      - 386
+      # - 386
       - amd64
-      - arm
-      - arm64
-    goarm:
-      - 5
-      - 6
-      - 7
-    ignore:
-      - goos: windows
-        goarch: arm
-      - goos: windows
-        goarch: arm64
-
     hooks:
-      #post: ./hack/compress.sh {{ .Path }}
-      post: upx {{ .Path }}
+      post:
+        # don't upx windows binaries as they make trouble with virus scanners
+        - bash -c 'if [[ "{{ .Path }}" != *.exe ]]; then upx {{ .Path }}; fi'
 checksum:
   name_template: 'checksums.txt'
 snapshot:

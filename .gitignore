@@ -5,3 +5,4 @@ cert-fetcher
 dist
 coverage.out
 .idea
+bin

@@ -20,15 +20,42 @@ test: tidy fmt vet
 test-ci: test
 	goveralls -service=travis-ci -v -coverprofile=coverage.out
 
-release: tools
-	@version=$$(semver); \
+release: goreleaser semver
+	@version=$$($(SEMVER)); \
 	git tag -s $$version -m"Release $$version"
-	goreleaser --rm-dist
+	$(GORELEASER) --clean
 
-test-release: tools
-	goreleaser --skip-publish --snapshot --rm-dist
+test-release: goreleaser
+	$(GORELEASER) --skip=publish --snapshot --clean
 
-tools:
-ifeq (, $(shell which goreleaser))
- $(shell go install github.com/goreleaser/goreleaser@latest)
-endif
+
+## toolbox - start
+## Current working directory
+LOCALDIR ?= $(shell which cygpath > /dev/null 2>&1 && cygpath -m $$(pwd) || pwd)
+## Location to install dependencies to
+LOCALBIN ?= $(LOCALDIR)/bin
+$(LOCALBIN):
+	mkdir -p $(LOCALBIN)
+
+## Tool Binaries
+GORELEASER ?= $(LOCALBIN)/goreleaser
+SEMVER ?= $(LOCALBIN)/semver
+
+## Tool Installer
+.PHONY: goreleaser
+goreleaser: $(GORELEASER) ## Download goreleaser locally if necessary.
+$(GORELEASER): $(LOCALBIN)
+	test -s $(LOCALBIN)/goreleaser || GOBIN=$(LOCALBIN) go install github.com/goreleaser/goreleaser
+.PHONY: semver
+semver: $(SEMVER) ## Download semver locally if necessary.
+$(SEMVER): $(LOCALBIN)
+	test -s $(LOCALBIN)/semver || GOBIN=$(LOCALBIN) go install github.com/bakito/semver
+
+## Update Tools
+.PHONY: update-toolbox-tools
+update-toolbox-tools:
+	@rm -f \
+		$(LOCALBIN)/goreleaser \
+		$(LOCALBIN)/semver
+	toolbox makefile -f $(LOCALDIR)/Makefile
+## toolbox - end
