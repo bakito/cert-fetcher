@@ -8,10 +8,22 @@ builds:
     goos:
       - linux
       - windows
-    #- darwin
+      - darwin
     goarch:
-      # - 386
+      - 386
       - amd64
+      - arm
+      - arm64
+    goarm:
+      - 5
+      - 6
+      - 7
+    ignore:
+      - goos: windows
+        goarch: arm
+      - goos: windows
+        goarch: arm64
+
     hooks:
       post:
         # don't upx windows binaries as they make trouble with virus scanners
