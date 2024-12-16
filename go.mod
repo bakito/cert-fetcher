@@ -1,6 +1,6 @@
 module github.com/bakito/cert-fetcher
 
-go 1.22
+go 1.23.4
 
 require (
 	github.com/bakito/semver v1.1.3

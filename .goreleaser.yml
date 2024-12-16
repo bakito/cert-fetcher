@@ -8,7 +8,7 @@ builds:
     goos:
       - linux
       - windows
-      - darwin
+#      - darwin
     goarch:
       - 386
       - amd64
