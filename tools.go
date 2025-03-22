@@ -5,5 +5,5 @@ package tools
 
 import (
 	_ "github.com/bakito/semver"
-	_ "github.com/goreleaser/goreleaser"
+	_ "github.com/goreleaser/goreleaser/v2"
 )
