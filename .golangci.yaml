@@ -1,37 +1,43 @@
-Derun:
-  timeout: 5m
-
+version: "2"
 linters:
   enable:
-  - asciicheck
-  - bodyclose
-  - dogsled
-  - durationcheck
-  - errcheck
-  - errorlint
-  - gci
-  - gofmt
-  - gofumpt
-  - goimports
-  - gosec
-  - gosimple
-  - govet
-  - importas
-  - ineffassign
-  - misspell
-  - nakedret
-  - nolintlint
-  - revive
-  - staticcheck
-  - unconvert
-  - unparam
-  - unused
-  - wastedassign
-linters-settings:
-  gosec:
-    # Exclude generated files
-    exclude-generated: true
-  gofmt:
-    # simplify code: gofmt with `-s` option, true by default
-    simplify: true
-
+    - asciicheck
+    - bodyclose
+    - dogsled
+    - durationcheck
+    - errorlint
+    - gosec
+    - importas
+    - misspell
+    - nakedret
+    - nolintlint
+    - revive
+    - unconvert
+    - unparam
+    - wastedassign
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+formatters:
+  enable:
+    - gci
+    - gofmt
+    - gofumpt
+    - goimports
+  settings:
+    gofmt:
+      simplify: true
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$

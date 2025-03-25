@@ -14,8 +14,8 @@ TB_GORELEASER ?= $(TB_LOCALBIN)/goreleaser
 TB_SEMVER ?= $(TB_LOCALBIN)/semver
 
 ## Tool Versions
-# renovate: packageName=github.com/golangci/golangci-lint/cmd/golangci-lint
-TB_GOLANGCI_LINT_VERSION ?= v1.64.8
+# renovate: packageName=github.com/golangci/golangci-lint/v2/cmd/golangci-lint
+TB_GOLANGCI_LINT_VERSION ?= v2.0.1
 # renovate: packageName=github.com/goreleaser/goreleaser/v2
 TB_GORELEASER_VERSION ?= v2.8.1
 # renovate: packageName=github.com/bakito/semver
@@ -25,7 +25,7 @@ TB_SEMVER_VERSION ?= v1.1.3
 .PHONY: tb.golangci-lint
 tb.golangci-lint: $(TB_GOLANGCI_LINT) ## Download golangci-lint locally if necessary.
 $(TB_GOLANGCI_LINT): $(TB_LOCALBIN)
-	test -s $(TB_LOCALBIN)/golangci-lint || GOBIN=$(TB_LOCALBIN) go install github.com/golangci/golangci-lint/cmd/golangci-lint@$(TB_GOLANGCI_LINT_VERSION)
+	test -s $(TB_LOCALBIN)/golangci-lint || GOBIN=$(TB_LOCALBIN) go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@$(TB_GOLANGCI_LINT_VERSION)
 .PHONY: tb.goreleaser
 tb.goreleaser: $(TB_GORELEASER) ## Download goreleaser locally if necessary.
 $(TB_GORELEASER): $(TB_LOCALBIN)
@@ -47,7 +47,7 @@ tb.reset:
 .PHONY: tb.update
 tb.update: tb.reset
 	toolbox makefile --renovate -f $(TB_LOCALDIR)/Makefile \
-		github.com/golangci/golangci-lint/cmd/golangci-lint \
+		github.com/golangci/golangci-lint/v2/cmd/golangci-lint \
 		github.com/goreleaser/goreleaser/v2 \
 		github.com/bakito/semver
 ## toolbox - end
