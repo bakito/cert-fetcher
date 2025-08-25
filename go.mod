@@ -5,7 +5,7 @@ go 1.24.1
 require (
 	github.com/pavel-v-chernykh/keystore-go v2.1.0+incompatible
 	github.com/spf13/cobra v1.9.1
-	github.com/stretchr/testify v1.10.0
+	github.com/stretchr/testify v1.11.0
 )
 
 require (
