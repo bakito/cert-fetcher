@@ -1,6 +1,6 @@
 module github.com/bakito/cert-fetcher
 
-go 1.25.1
+go 1.25.4
 
 require (
 	github.com/pavel-v-chernykh/keystore-go v2.1.0+incompatible
