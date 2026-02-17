@@ -27,6 +27,7 @@ func ExportTo(targetURL string, certIndexes []int, outputFile string) error {
 		u, _ := url.Parse(targetURL)
 		fileName = u.Host + ".pem"
 	}
+	// nolint:gosec // G703
 	f, err := os.Create(fileName)
 	if err != nil {
 		return err

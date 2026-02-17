@@ -77,6 +77,7 @@ func exportCerts(certs []*x509.Certificate, targetURL string, certIndexes []int,
 		fileName = u.Host + ".jks"
 	}
 
+	// nolint:gosec // G703
 	k, _ := os.Create(fileName)
 	defer closeIt(k)
 	if err := keystore.Encode(k, ks, []byte(jksPassword)); err != nil {
