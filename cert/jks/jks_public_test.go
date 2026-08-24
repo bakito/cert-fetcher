@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/bakito/cert-fetcher/cert/jks"
-	"github.com/stretchr/testify/assert"
 )
 
 func Test_Export(t *testing.T) {
@@ -16,5 +15,7 @@ func Test_Export(t *testing.T) {
 
 	outFile := "test-cert.jks"
 	err := jks.Export(ts.URL, []int{0}, "", "changeit", outFile)
-	assert.NoError(t, err)
+	if err != nil {
+		t.Errorf("expected no error, but got %v", err)
+	}
 }

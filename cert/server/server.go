@@ -2,7 +2,7 @@ package server
 
 import (
 	"bytes"
-	"crypto/rand"
+	"context"
 	"crypto/tls"
 	"encoding/pem"
 	"fmt"
@@ -23,8 +23,6 @@ func Serve(port int) error {
 		Certificates: []tls.Certificate{cert},
 		ClientAuth:   tls.RequestClientCert,
 	}
-
-	config.Rand = rand.Reader
 	service := fmt.Sprintf("0.0.0.0:%d", port)
 	listener, err := tls.Listen("tcp", service, &config)
 	if err != nil {
@@ -48,9 +46,10 @@ func handleClient(conn net.Conn) {
 	tlscon, ok := conn.(*tls.Conn)
 	if ok {
 		log.Print("server: conn: type assert to TLS succeedded")
-		err := tlscon.Handshake()
+		err := tlscon.HandshakeContext(context.Background())
 		if err != nil {
-			log.Fatalf("server: handshake failed: %v", err)
+			log.Printf("server: handshake failed: %v", err)
+			return
 		}
 
 		log.Print("server: conn: Handshake completed")

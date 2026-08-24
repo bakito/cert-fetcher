@@ -10,14 +10,15 @@ import (
 	"strings"
 	"time"
 
-	c "github.com/bakito/cert-fetcher/cert"
 	keystore "github.com/pavel-v-chernykh/keystore-go"
+
+	c "github.com/bakito/cert-fetcher/cert"
 )
 
 var out io.Writer = os.Stdout // modified during testing
 
-// Export Export the certificates from the target URL into java keystore file
-func Export(targetURL string, certIndexes []int, jksSource string, jksPassword string, outputFile string) error {
+// Export the certificates from the target URL into java keystore file.
+func Export(targetURL string, certIndexes []int, jksSource, jksPassword, outputFile string) error {
 	certs, err := c.FetchCertificates(targetURL)
 	if err != nil {
 		return err
@@ -25,11 +26,17 @@ func Export(targetURL string, certIndexes []int, jksSource string, jksPassword s
 	return exportCerts(certs, targetURL, certIndexes, jksSource, jksPassword, outputFile)
 }
 
-func exportCerts(certs []*x509.Certificate, targetURL string, certIndexes []int, jksSource string, jksPassword string, outputFile string) error {
+func exportCerts(
+	certs []*x509.Certificate,
+	targetURL string,
+	certIndexes []int,
+	jksSource,
+	jksPassword,
+	outputFile string,
+) error {
 	additional := ""
 	var ks keystore.KeyStore
 	if jksSource != "" {
-
 		// #nosec G304
 		s, err := os.Open(jksSource)
 		if err != nil {
@@ -52,9 +59,7 @@ func exportCerts(certs []*x509.Certificate, targetURL string, certIndexes []int,
 			if !alreadyContained(ks, cert, i) {
 				c.PrintAdd(i, cert)
 				ce := &keystore.TrustedCertificateEntry{
-					Entry: keystore.Entry{
-						CreationDate: time.Now(),
-					},
+					CreationDate: time.Now(),
 					Certificate: keystore.Certificate{
 						Content: cert.Raw,
 						Type:    "X.509",
@@ -77,7 +82,7 @@ func exportCerts(certs []*x509.Certificate, targetURL string, certIndexes []int,
 		fileName = u.Host + ".jks"
 	}
 
-	// nolint:gosec // G703
+	//nolint:gosec // G703
 	k, _ := os.Create(fileName)
 	defer closeIt(k)
 	if err := keystore.Encode(k, ks, []byte(jksPassword)); err != nil {
@@ -96,8 +101,7 @@ func alias(cert *x509.Certificate) string {
 
 func alreadyContained(ks keystore.KeyStore, cert *x509.Certificate, index int) bool {
 	for a, e := range ks {
-		switch tce := e.(type) {
-		case *keystore.TrustedCertificateEntry:
+		if tce, ok := e.(*keystore.TrustedCertificateEntry); ok {
 			if reflect.DeepEqual(cert.Raw, tce.Certificate.Content) {
 				c.PrintSkipDetailed(index, cert, fmt.Sprintf("that is already contained with alias '%s'", a))
 				return true

@@ -1,8 +1,9 @@
 package cmd
 
 import (
-	"github.com/bakito/cert-fetcher/cert/jks"
 	"github.com/spf13/cobra"
+
+	"github.com/bakito/cert-fetcher/cert/jks"
 )
 
 var (
@@ -10,7 +11,7 @@ var (
 	jksSource   string
 )
 
-// jksCmd represents the jks command
+// jksCmd represents the jks command.
 var jksCmd = &cobra.Command{
 	Version:   version,
 	Use:       "jks [url]",
@@ -25,6 +26,7 @@ var jksCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(jksCmd)
-	jksCmd.PersistentFlags().StringVarP(&jksPassword, "password", "p", "changeit", "the password to be used for the java keystore")
+	jksCmd.PersistentFlags().
+		StringVarP(&jksPassword, "password", "p", "changeit", "the password to be used for the java keystore")
 	jksCmd.PersistentFlags().StringVarP(&jksSource, "source", "s", "", "the source keystore to add the certs to")
 }

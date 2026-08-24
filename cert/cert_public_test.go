@@ -3,11 +3,11 @@ package cert_test
 import (
 	"net/http"
 	"net/http/httptest"
+	"regexp"
 	"testing"
 
 	"github.com/bakito/cert-fetcher/cert"
 	"github.com/bakito/cert-fetcher/cert/test"
-	"github.com/stretchr/testify/assert"
 )
 
 func Test_FetchCertificates_No_TLS(t *testing.T) {
@@ -16,7 +16,9 @@ func Test_FetchCertificates_No_TLS(t *testing.T) {
 	defer ts.Close()
 
 	_, err := cert.FetchCertificates(ts.URL)
-	assert.Error(t, err)
+	if err == nil {
+		t.Error("expected error, but got nil")
+	}
 }
 
 func Test_FetchCertificates_Chain(t *testing.T) {
@@ -24,8 +26,12 @@ func Test_FetchCertificates_Chain(t *testing.T) {
 	}))
 	defer ts.Close()
 	certs, err := cert.FetchCertificates(ts.URL)
-	assert.NoError(t, err)
-	assert.Len(t, certs, 1)
+	if err != nil {
+		t.Errorf("expected no error, but got %v", err)
+	}
+	if len(certs) != 1 {
+		t.Errorf("expected 1 certificate, but got %d", len(certs))
+	}
 }
 
 func Test_Print(t *testing.T) {
@@ -37,13 +43,26 @@ func Test_Print(t *testing.T) {
 	defer revert()
 
 	cert.Print(ts.URL)
-	assert.Regexp(t, "Certificate #0\\:\nSubject: .*\nIssuer\\: .*\nNotBefore\\: .*\nNotAfter\\: .*\n\n", out.String())
+	pattern := "Certificate #0\\:\nSubject: .*\nIssuer\\: .*\nNotBefore\\: .*\nNotAfter\\: .*\n\n"
+	matched, err := regexp.MatchString(pattern, out.String())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !matched {
+		t.Errorf("output does not match pattern %q\noutput:\n%s", pattern, out.String())
+	}
 }
 
 func Test_IsToExport(t *testing.T) {
-	assert.True(t, cert.IsToExport([]int{}, 1))
-	assert.True(t, cert.IsToExport([]int{1}, 1))
-	assert.False(t, cert.IsToExport([]int{1}, 2))
+	if !cert.IsToExport([]int{}, 1) {
+		t.Error("expected IsToExport([], 1) to be true")
+	}
+	if !cert.IsToExport([]int{1}, 1) {
+		t.Error("expected IsToExport([1], 1) to be true")
+	}
+	if cert.IsToExport([]int{1}, 2) {
+		t.Error("expected IsToExport([1], 2) to be false")
+	}
 }
 
 func Test_PrintAdd(t *testing.T) {
@@ -52,7 +71,10 @@ func Test_PrintAdd(t *testing.T) {
 
 	cert.PrintAdd(1, test.NewCert(t))
 
-	assert.Equal(t, " + Adding   certificate #1: GeoTrust Global CA\n", out.String())
+	expected := " + Adding   certificate #1: GeoTrust Global CA\n"
+	if out.String() != expected {
+		t.Errorf("expected %q, but got %q", expected, out.String())
+	}
 }
 
 func Test_PrintSkip(t *testing.T) {
@@ -61,5 +83,8 @@ func Test_PrintSkip(t *testing.T) {
 
 	cert.PrintSkip(1, test.NewCert(t))
 
-	assert.Equal(t, " - Skipping certificate #1: GeoTrust Global CA \n", out.String())
+	expected := " - Skipping certificate #1: GeoTrust Global CA \n"
+	if out.String() != expected {
+		t.Errorf("expected %q, but got %q", expected, out.String())
+	}
 }

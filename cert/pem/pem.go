@@ -14,7 +14,7 @@ import (
 
 var out io.Writer = os.Stdout // modified during testing
 
-// ExportTo the certificates from the target URL into a pem file
+// ExportTo the certificates from the target URL into a pem file.
 func ExportTo(targetURL string, certIndexes []int, outputFile string) error {
 	data, cnt, err := Export(targetURL, certIndexes)
 	if err != nil {
@@ -27,7 +27,7 @@ func ExportTo(targetURL string, certIndexes []int, outputFile string) error {
 		u, _ := url.Parse(targetURL)
 		fileName = u.Host + ".pem"
 	}
-	// nolint:gosec // G703
+	//nolint:gosec // G703
 	f, err := os.Create(fileName)
 	if err != nil {
 		return err
@@ -39,7 +39,7 @@ func ExportTo(targetURL string, certIndexes []int, outputFile string) error {
 	return nil
 }
 
-// Export the certificates from the target URL
+// Export the certificates from the target URL.
 func Export(targetURL string, certIndexes []int) ([]byte, int, error) {
 	certs, err := c.FetchCertificates(targetURL)
 	if err != nil {

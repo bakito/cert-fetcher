@@ -5,11 +5,12 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/bakito/cert-fetcher/cert/server"
 	"github.com/spf13/cobra"
+
+	"github.com/bakito/cert-fetcher/cert/server"
 )
 
-// serveCmd represents the serve command
+// serveCmd represents the serve command.
 var serveCmd = &cobra.Command{
 	Version: version,
 	Use:     "serve [port]",

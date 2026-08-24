@@ -17,14 +17,17 @@ import (
 	"time"
 )
 
-func publicKey(priv interface{}) interface{} {
+func publicKey(priv any) any {
 	switch k := priv.(type) {
 	case *rsa.PrivateKey:
 		return &k.PublicKey
 	case *ecdsa.PrivateKey:
 		return &k.PublicKey
 	case ed25519.PrivateKey:
-		return k.Public().(ed25519.PublicKey)
+		if pub, ok := k.Public().(ed25519.PublicKey); ok {
+			return pub
+		}
+		return nil
 	default:
 		return nil
 	}

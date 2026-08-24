@@ -6,8 +6,9 @@ import (
 	"net/url"
 	"os"
 
-	"github.com/bakito/cert-fetcher/cert"
 	"github.com/spf13/cobra"
+
+	"github.com/bakito/cert-fetcher/cert"
 )
 
 var (
@@ -16,7 +17,7 @@ var (
 	version     string
 )
 
-// rootCmd represents the base command when called without any subcommands
+// rootCmd represents the base command when called without any subcommands.
 var rootCmd = &cobra.Command{
 	Version:   version,
 	Use:       "cert-fetcher [url]",
@@ -40,7 +41,8 @@ func Execute() {
 
 func init() {
 	rootCmd.PersistentFlags().StringVarP(&outputFile, "out-file", "o", "", "the output file")
-	rootCmd.PersistentFlags().IntSliceVarP(&certIndexes, "import-at", "i", make([]int, 0), "import the certificates at the given indexes")
+	rootCmd.PersistentFlags().
+		IntSliceVarP(&certIndexes, "import-at", "i", make([]int, 0), "import the certificates at the given indexes")
 }
 
 func urlArg(_ *cobra.Command, args []string) error {

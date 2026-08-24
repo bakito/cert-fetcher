@@ -1,11 +1,12 @@
 package cmd
 
 import (
-	"github.com/bakito/cert-fetcher/cert/pem"
 	"github.com/spf13/cobra"
+
+	"github.com/bakito/cert-fetcher/cert/pem"
 )
 
-// pemCmd represents the pem command
+// pemCmd represents the pem command.
 var pemCmd = &cobra.Command{
 	Version:   version,
 	Use:       "pem [url]",

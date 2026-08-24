@@ -4,20 +4,23 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"testing"
-
-	"github.com/stretchr/testify/assert"
 )
 
-// NewCert NewCert
+// NewCert NewCert.
 func NewCert(t *testing.T) *x509.Certificate {
+	t.Helper()
 	block, _ := pem.Decode([]byte(GeoTrustRoot))
-	assert.NotNil(t, block)
+	if block == nil {
+		t.Fatal("failed to decode PEM block")
+	}
 	cert, err := x509.ParseCertificate(block.Bytes)
-	assert.NoError(t, err)
+	if err != nil {
+		t.Fatalf("failed to parse certificate: %v", err)
+	}
 	return cert
 }
 
-// GeoTrustRoot GeoTrustRoot certificate
+// GeoTrustRoot certificate.
 const GeoTrustRoot = `-----BEGIN CERTIFICATE-----
 MIIDVDCCAjygAwIBAgIDAjRWMA0GCSqGSIb3DQEBBQUAMEIxCzAJBgNVBAYTAlVT
 MRYwFAYDVQQKEw1HZW9UcnVzdCBJbmMuMRswGQYDVQQDExJHZW9UcnVzdCBHbG9i

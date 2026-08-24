@@ -7,7 +7,6 @@ import (
 	"testing"
 
 	"github.com/bakito/cert-fetcher/cert/pem"
-	"github.com/stretchr/testify/assert"
 )
 
 func Test_Export(t *testing.T) {
@@ -17,6 +16,8 @@ func Test_Export(t *testing.T) {
 
 	outFile := "test-cert.pem"
 	err := pem.ExportTo(ts.URL, []int{0}, outFile)
-	assert.NoError(t, err)
+	if err != nil {
+		t.Errorf("expected no error, but got %v", err)
+	}
 	_ = os.Remove("test-cert.pem")
 }
