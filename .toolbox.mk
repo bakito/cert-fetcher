@@ -15,7 +15,7 @@ TB_SEMVER ?= $(TB_LOCALBIN)/semver
 
 ## Tool Versions
 # renovate: packageName=github.com/golangci/golangci-lint/v2
-TB_GOLANGCI_LINT_VERSION ?= v2.12.2
+TB_GOLANGCI_LINT_VERSION ?= v2.13.1
 # renovate: packageName=github.com/goreleaser/goreleaser/v2
 TB_GORELEASER_VERSION ?= v2.17.1
 # renovate: packageName=github.com/bakito/semver
