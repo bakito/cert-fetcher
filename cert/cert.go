@@ -32,7 +32,7 @@ func Print(targetURL string) error {
 		return err
 	}
 	for i, cert := range certs {
-		err = fmt.Fprintf(
+		_, err = fmt.Fprintf(
 			out,
 			certTemplate,
 			i,
