@@ -32,7 +32,7 @@ func Print(targetURL string) error {
 		return err
 	}
 	for i, cert := range certs {
-		if _, err = fmt.Fprintf(
+		err = fmt.Fprintf(
 			out,
 			certTemplate,
 			i,
@@ -40,7 +40,8 @@ func Print(targetURL string) error {
 			cert.Issuer.CommonName,
 			cert.NotBefore.In(time.UTC).String(),
 			cert.NotAfter.In(time.UTC).String(),
-		); err != nil {
+		)
+		if err != nil {
 			return err
 		}
 	}
