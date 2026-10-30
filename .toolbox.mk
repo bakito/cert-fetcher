@@ -19,7 +19,7 @@ TB_GOLANGCI_LINT_VERSION ?= v2.15.0
 # renovate: packageName=github.com/goreleaser/goreleaser/v2
 TB_GORELEASER_VERSION ?= v2.19.0
 # renovate: packageName=github.com/bakito/semver
-TB_SEMVER_VERSION ?= v1.1.10
+TB_SEMVER_VERSION ?= v1.1.13
 
 ## Tool Installer
 .PHONY: tb.golangci-lint
